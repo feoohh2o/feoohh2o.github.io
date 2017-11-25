@@ -2,7 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import SearchReddit from './components/SearchReddit/SearchReddit'
+import Vuetify from 'vuetify'
+import '../node_modules/vuetify/dist/vuetify.min.css'
 
+Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 const routes = [
@@ -21,6 +24,6 @@ const app = new Vue({
   components: {
     App,
   },
-  template: "<App></App>",
+  template: "<v-app><App></App></v-app>",
   el: "#app"
 })

@@ -1,52 +1,78 @@
 <template>
-  <span>
-    <form>
-      <label for="query">Query:</label>
-      <input type="text" name="query" v-model="query"/>
-      <label for="size">Size:</label>
-      <input type="number" name="size" v-model="size" value="50"/>
-      <input type="submit" value="Search" @click.prevent="on_click"/>
-    </form>
-    <p v-show="loading">Loading...</p>
-    <p v-show="error">{{error}}</p>
-    <div>
-      <ul>
-        <li v-for="row in search_results">
-          <p>
-            <a :href="`https://www.reddit.com/u/${row['author']}`">
-              {{row["author"]}}
-            </a>
-            <a :href="`https://www.reddit.com${row['permalink']}`">
-              commented
-            </a>
-            in <a :href="`https://www.reddit.com/r/${row['subreddit']}`">{{row['subreddit']}}</a>
-          </p>
-          <p>
+  <v-container>
+    <v-layout grid-list-md>
+      <v-flex>
+        <v-form>
+          <v-flex xs9>
+          <v-text-field
+                name="query"
+                label="Query"
+                v-model="query"
+                class="input-group--focused"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs2>
+            <v-text-field
+                  name="size"
+                  label="Size"
+                  type="number"
+                  v-model="size"
+              ></v-text-field>
+          </v-flex>
+          <v-flex xs1>
+            <v-btn
+              @click="submit"
+            >
+            submit
+          </v-btn>
+          </v-flex>
+        </v-form>
+      </v-flex>
+      <v-flex>
+        <p v-show="loading">Loading...</p>
+        <p v-show="error">{{error}}</p>
+      </v-flex>
+      <v-flex>
+        <ul>
+          <li v-for="row in search_results">
+            <p>
+              <a :href="`https://www.reddit.com/u/${row['author']}`">
+                {{row["author"]}}
+              </a>
+              <a :href="`https://www.reddit.com${row['permalink']}`">
+                commented
+              </a>
+              in <a :href="`https://www.reddit.com/r/${row['subreddit']}`">{{row['subreddit']}}</a>
+            </p>
+            <p>
 
-          </p>
-          <div class="textwrapper">
-            <textarea rows="6" cols="100">{{row['body'].trim()}}</textarea>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </span>
+            </p>
+            <div class="textwrapper">
+              <textarea rows="6" cols="100">{{row['body'].trim()}}</textarea>
+            </div>
+          </li>
+        </ul>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 <script>
-import utils from '../../utils'
+  import utils from '../../utils'
+  // import fixture from './fixture'
 
   export default {
     data() {
       return {
         "query": [],
         "size": 50,
-        "search_results": "",
+        // "search_results": fixture.data,
+        "search_results": [],
         "error": "",
         "loading": false
       }
     },
     methods: {
-      on_click() {
+      submit() {
         this.loading = true;
         this.error = "";
         utils.xdr(
