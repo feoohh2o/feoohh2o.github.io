@@ -35,7 +35,7 @@
         <p v-show="error">{{error}}</p>
       </v-flex>
       <v-flex>
-        <v-expansion-panel>
+        <v-expansion-panel expand>
           <v-expansion-panel-content v-for="row, i in search_results" :key="i">
             <div slot="header">
               <a :href="`https://www.reddit.com/u/${row['author']}`">{{row["author"]}}</a> in
