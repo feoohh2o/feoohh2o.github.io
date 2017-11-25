@@ -25,13 +25,13 @@
             >
             submit
           </v-btn>
+          <v-progress-circular v-show="loading" indeterminate color="primary"></v-progress-circular>
           </v-flex>
         </v-form>
       </v-flex>
     </v-layout>
     <v-layout>
       <v-flex>
-        <p v-show="loading">Loading...</p>
         <p v-show="error">{{error}}</p>
       </v-flex>
       <v-flex>
