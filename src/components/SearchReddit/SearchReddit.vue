@@ -38,21 +38,8 @@
     <v-layout>
       <v-flex>
         <v-expansion-panel expand>
-          <v-expansion-panel-content v-for="row, i in search_results" :key="i">
-            <div slot="header">
-              <a :href="`https://www.reddit.com/u/${row['author']}`">{{row["author"]}}</a> in
-              <a :href="`https://www.reddit.com/r/${row['subreddit']}`">{{row["subreddit"]}}</a>:
-              {{row['body'].slice(0, 100) + '...'}}
-            </div>
-            <v-card>
-              <v-card-text class="grey lighten-3">
-                {{row['body']}}
-                <a :href="`https://www.reddit.com${row['permalink']}`">
-                  permalink
-                </a>
-              </v-card-text>
-            </v-card>
-          </v-expansion-panel-content>
+          <Comment :comment="row" v-for="row, i in search_results" :key="i">
+          </Comment>
         </v-expansion-panel>
       </v-flex>
     </v-layout>
@@ -61,26 +48,22 @@
 <script>
   import utils from '../../utils'
   import fixture from './fixture'
+  import marked from 'marked'
   import _ from 'lodash';
+  import Comment from './Comment'
 
   export default {
+    components: {
+        Comment
+    },
     data() {
       return {
         "query": [],
         "size": 50,
-        "raw_search_results": fixture.data,
-        // "search_results": [],
+        // "search_results": fixture.data,
+        "search_results": [],
         "error": "",
         "loading": false
-      }
-    },
-    computed: {
-      search_results() {
-        let search_results = _.map(this.raw_search_results, (row) => {
-          row['body'] = utils.decode_string(row['body']);
-          return row;
-        });
-        return search_results;
       }
     },
     methods: {
@@ -95,8 +78,8 @@
           (result) => {
             this.loading = false;
             try {
-              this.raw_search_results = JSON.parse(result).data;
-              console.log(this.raw_search_results);
+              this.search_results = JSON.parse(result).data;
+              console.log(this.search_results);
             } catch(err) {
               this.error = "internal error";
               console.error(err);
@@ -115,13 +98,13 @@
     }
   }
 </script>
-<style scoped>
-textarea {
-  width:100%;
-}
-.textwrapper {
-  border:1px solid #999999;
-  margin:5px 0;
-  padding:3px;
+<style>
+blockquote {
+    border-left: 2px solid #edf1f3;
+    color: #738491;
+    margin-top: 0.35714285714285715em;
+    margin-bottom: 0.35714285714285715em;
+    padding: 0 8px;
+    margin-left: 5px;
 }
 </style>
