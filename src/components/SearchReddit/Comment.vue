@@ -30,7 +30,14 @@
         return utils.decode_string(this.comment['body']);
       },
       preview() {
-        return this.decoded.slice(0, 100) + '...';
+        let num_chars = 100;
+        if (this.decoded.length > num_chars) {
+          return this.decoded.slice(0, num_chars) + '...';
+        } else {
+          return this.decoded;
+        }
+
+        return  + '...';
       },
       body() {
         return marked(this.decoded,  { sanitize: true });
