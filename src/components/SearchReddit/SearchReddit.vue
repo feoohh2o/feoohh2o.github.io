@@ -2,13 +2,14 @@
   <v-container>
     <v-layout>
       <v-flex>
-        <v-form>
+        <v-form @submit.prevent="submit">
           <v-flex lg9>
           <v-text-field
                 name="query"
                 label="Query"
                 v-model="query"
                 class="input-group--focused"
+                v-on:keyup.enter="submit"
             ></v-text-field>
           </v-flex>
           <v-flex lg2>
