@@ -1,3 +1,8 @@
+import $ from 'jquery';
+
+function encode_url(url, params) {
+  return url + "?" + $.param(params, true );
+}
 /**
  * Make a X-Domain request to url and callback.
  *
@@ -7,7 +12,10 @@
  * @param callback {Function} to callback on completion
  * @param errback {Function} to callback on error
  */
-function xdr(url, method, data, callback, errback) {
+function xdr(url, method, get_params, data, callback, errback) {
+    url = encode_url(url, get_params);
+    console.log(`url: ${url}, method: ${method}, data: ${JSON.stringify(data)}`);
+
     var req;
 
     if(XMLHttpRequest) {
