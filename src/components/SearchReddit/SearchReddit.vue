@@ -61,16 +61,26 @@
 <script>
   import utils from '../../utils'
   import fixture from './fixture'
+  import _ from 'lodash';
 
   export default {
     data() {
       return {
         "query": [],
         "size": 50,
-        "search_results": fixture.data,
+        "raw_search_results": fixture.data,
         // "search_results": [],
         "error": "",
         "loading": false
+      }
+    },
+    computed: {
+      search_results() {
+        let search_results = _.map(this.raw_search_results, (row) => {
+          row['body'] = utils.decode_string(row['body']);
+          return row;
+        });
+        return search_results;
       }
     },
     methods: {
@@ -85,12 +95,14 @@
           (result) => {
             this.loading = false;
             try {
-              this.search_results = JSON.parse(result).data;
-              console.log(this.search_results);
+              this.raw_search_results = JSON.parse(result).data;
+              console.log(this.raw_search_results);
             } catch(err) {
               this.error = "internal error";
               console.error(err);
+              return;
             }
+
           },
           (result) => {
             this.loading = false;

@@ -48,7 +48,15 @@ function xdr(url, method, get_params, data, callback, errback) {
     }
 }
 
+function decode_string(encodedStr) {
+  var parser = new DOMParser;
+  var dom = parser.parseFromString(
+      '<!doctype html><body>' + encodedStr,
+      'text/html');
+  return dom.body.textContent;
+}
 
 export default {
-  xdr
+  xdr,
+  decode_string
 }
