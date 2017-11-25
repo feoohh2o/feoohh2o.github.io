@@ -1,9 +1,9 @@
 <template>
   <v-container>
-    <v-layout grid-list-md>
+    <v-layout>
       <v-flex>
         <v-form>
-          <v-flex xs9>
+          <v-flex lg9>
           <v-text-field
                 name="query"
                 label="Query"
@@ -11,7 +11,7 @@
                 class="input-group--focused"
             ></v-text-field>
           </v-flex>
-          <v-flex xs2>
+          <v-flex lg2>
             <v-text-field
                   name="size"
                   label="Size"
@@ -19,7 +19,7 @@
                   v-model="size"
               ></v-text-field>
           </v-flex>
-          <v-flex xs1>
+          <v-flex lg1>
             <v-btn
               @click="submit"
             >
@@ -28,45 +28,45 @@
           </v-flex>
         </v-form>
       </v-flex>
+    </v-layout>
+    <v-layout>
       <v-flex>
         <p v-show="loading">Loading...</p>
         <p v-show="error">{{error}}</p>
       </v-flex>
       <v-flex>
-        <ul>
-          <li v-for="row in search_results">
-            <p>
-              <a :href="`https://www.reddit.com/u/${row['author']}`">
-                {{row["author"]}}
-              </a>
-              <a :href="`https://www.reddit.com${row['permalink']}`">
-                commented
-              </a>
-              in <a :href="`https://www.reddit.com/r/${row['subreddit']}`">{{row['subreddit']}}</a>
-            </p>
-            <p>
-
-            </p>
-            <div class="textwrapper">
-              <textarea rows="6" cols="100">{{row['body'].trim()}}</textarea>
+        <v-expansion-panel>
+          <v-expansion-panel-content v-for="row, i in search_results" :key="i">
+            <div slot="header">
+              <a :href="`https://www.reddit.com/u/${row['author']}`">{{row["author"]}}</a> in
+              <a :href="`https://www.reddit.com/r/${row['subreddit']}`">{{row["subreddit"]}}</a>:
+              {{row['body'].slice(0, 100) + '...'}}
             </div>
-          </li>
-        </ul>
+            <v-card>
+              <v-card-text class="grey lighten-3">
+                {{row['body']}}
+                <a :href="`https://www.reddit.com${row['permalink']}`">
+                  permalink
+                </a>
+              </v-card-text>
+            </v-card>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 <script>
   import utils from '../../utils'
-  // import fixture from './fixture'
+  import fixture from './fixture'
 
   export default {
     data() {
       return {
         "query": [],
         "size": 50,
-        // "search_results": fixture.data,
-        "search_results": [],
+        "search_results": fixture.data,
+        // "search_results": [],
         "error": "",
         "loading": false
       }
