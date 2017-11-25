@@ -24,16 +24,18 @@
               @click="submit"
             >
             submit
-          </v-btn>
-          <v-progress-circular v-show="loading" indeterminate color="primary"></v-progress-circular>
+            </v-btn>
+          </v-flex>
+          <v-flex lg>
+            <v-alert v-show="error" color="error" icon="warning">
+              {{error}}
+            </v-alert>
+            <v-progress-circular v-show="loading" indeterminate color="primary"></v-progress-circular>
           </v-flex>
         </v-form>
       </v-flex>
     </v-layout>
     <v-layout>
-      <v-flex>
-        <p v-show="error">{{error}}</p>
-      </v-flex>
       <v-flex>
         <v-expansion-panel expand>
           <v-expansion-panel-content v-for="row, i in search_results" :key="i">
@@ -81,14 +83,20 @@
           {"q": this.query, "size": this.size},
           {},
           (result) => {
-            this.search_results = JSON.parse(result).data;
-            console.log(this.search_results);
             this.loading = false;
+            try {
+              this.search_results = JSON.parse(result).data;
+              console.log(this.search_results);
+            } catch(err) {
+              this.error = "internal error";
+              console.error(err);
+            }
           },
           (result) => {
+            this.loading = false;
             this.error = "internal error";
             console.error(result);
-            this.loading = false;
+
           }
         )
       }
