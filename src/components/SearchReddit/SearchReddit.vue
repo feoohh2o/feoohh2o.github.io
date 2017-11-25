@@ -73,7 +73,11 @@
         utils.xdr(
           "https://api.pushshift.io/reddit/comment/search/",
           "GET",
-          {"q": this.query, "size": this.size},
+          {
+            "q": this.query,
+            "size": this.size,
+            "r": new Date().getTime()
+          },
           {},
           (result) => {
             this.loading = false;
