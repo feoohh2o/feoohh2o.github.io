@@ -1,25 +1,25 @@
 <template>
-    <v-expansion-panel-content v-model="expand" @click="on_click">
-    <div slot="header"  @click="on_click">
-      <a :href="`https://www.reddit.com/u/${comment['author']}`">{{comment["author"]}}</a> in
-      <a :href="`https://www.reddit.com/r/${comment['subreddit']}`">{{comment["subreddit"]}}</a>:
-      {{preview}}
-    </div>
-    <v-card>
-      <v-card-text class="grey lighten-3">
-        <div v-html="body"></div>
-        <a :href="`https://www.reddit.com${comment['permalink']}`">
-          permalink
-        </a>
-      </v-card-text>
-    </v-card>
+    <v-expansion-panel-content v-model="expand" @click="on_click" :class="{'active': active}">
+      <div slot="header"  @click="on_click">
+        <a :href="`https://www.reddit.com/u/${comment['author']}`">{{comment["author"]}}</a> in
+        <a :href="`https://www.reddit.com/r/${comment['subreddit']}`">{{comment["subreddit"]}}</a>:
+        {{preview}}
+      </div>
+      <v-card>
+        <v-card-text class="grey lighten-3">
+          <div v-html="body"></div>
+          <a :href="`https://www.reddit.com${comment['permalink']}`">
+            permalink
+          </a>
+        </v-card-text>
+      </v-card>
   </v-expansion-panel-content>
 </template>
 <script>
   import marked from 'marked'
   import utils from '../../utils.js'
   export default {
-    props: ['comment'],
+    props: ['comment', 'active'],
     data() {
       return {
         expand: false
@@ -46,7 +46,13 @@
     methods: {
       on_click() {
         this.expand = !this.expand;
+        this.$emit("click");
       }
     }
   }
 </script>
+<style scoped>
+.active {
+  background-color: lightgray !important;
+}
+</style>

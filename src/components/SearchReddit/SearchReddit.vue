@@ -38,10 +38,7 @@
     </v-layout>
     <v-layout>
       <v-flex>
-        <v-expansion-panel expand>
-          <Comment :comment="row" v-for="row, i in search_results" :key="i">
-          </Comment>
-        </v-expansion-panel>
+        <CommentCollection :comments="search_results"></CommentCollection>
       </v-flex>
     </v-layout>
   </v-container>
@@ -51,18 +48,18 @@
   import fixture from './fixture'
   import marked from 'marked'
   import _ from 'lodash';
-  import Comment from './Comment'
+  import CommentCollection from './CommentCollection'
 
   export default {
     components: {
-        Comment
+        CommentCollection
     },
     data() {
       return {
         "query": [],
         "size": 50,
-        // "search_results": fixture.data,
-        "search_results": [],
+        "search_results": fixture.data,
+        // "search_results": [],
         "error": "",
         "loading": false
       }
