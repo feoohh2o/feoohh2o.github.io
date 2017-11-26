@@ -8,7 +8,7 @@
       <v-card>
         <v-card-text class="grey lighten-3">
           <div v-html="body"></div>
-          <a :href="`https://www.reddit.com${comment['permalink']}`">
+          <a :href="permalink">
             permalink
           </a>
         </v-card-text>
@@ -41,6 +41,9 @@
       },
       body() {
         return marked(this.decoded,  { sanitize: true });
+      },
+      permalink() {
+        return `https://www.reddit.com${this.comment['permalink']}?context=3`
       }
     },
     methods: {
