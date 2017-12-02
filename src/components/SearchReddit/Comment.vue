@@ -54,8 +54,16 @@
     }
   }
 </script>
-<style scoped>
+<style>
 .active {
   background-color: lightgray !important;
+}
+blockquote {
+    border-left: 2px solid #edf1f3;
+    color: #738491;
+    margin-top: .35714285714285715em;
+    margin-bottom: .35714285714285715em;
+    padding: 0 8px;
+    margin-left: 5px;
 }
 </style>
