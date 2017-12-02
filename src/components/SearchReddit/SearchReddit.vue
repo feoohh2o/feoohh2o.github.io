@@ -2,7 +2,7 @@
   <v-container>
     <v-layout>
       <v-flex>
-        <v-form @submit.prevent="submit">
+        <v-form>
           <v-flex lg9>
           <v-text-field
                 name="query"
@@ -38,7 +38,10 @@
     </v-layout>
     <v-layout>
       <v-flex>
-        <CommentCollection :comments="search_results"></CommentCollection>
+        <v-expansion-panel expand>
+          <Comment :comment="row" v-for="row, i in search_results" :key="i">
+          </Comment>
+        </v-expansion-panel>
       </v-flex>
     </v-layout>
   </v-container>
@@ -48,18 +51,18 @@
   import fixture from './fixture'
   import marked from 'marked'
   import _ from 'lodash';
-  import CommentCollection from './CommentCollection'
+  import Comment from './Comment'
 
   export default {
     components: {
-        CommentCollection
+        Comment
     },
     data() {
       return {
         "query": [],
         "size": 50,
-        "search_results": fixture.data,
-        // "search_results": [],
+        // "search_results": fixture.data,
+        "search_results": [],
         "error": "",
         "loading": false
       }
@@ -71,11 +74,7 @@
         utils.xdr(
           "https://api.pushshift.io/reddit/comment/search/",
           "GET",
-          {
-            "q": this.query,
-            "size": this.size,
-            "r": new Date().getTime()
-          },
+          {"q": this.query, "size": this.size},
           {},
           (result) => {
             this.loading = false;
@@ -100,13 +99,20 @@
     }
   }
 </script>
-<style>
-blockquote {
+<style scoped>
+.md blockquote {
     border-left: 2px solid #edf1f3;
     color: #738491;
+}
+.md .-blocks, .md .-lists, .md pre, .md blockquote, .md table, .md p, .md ul, .md ol {
     margin-top: 0.35714285714285715em;
     margin-bottom: 0.35714285714285715em;
+}
+.md blockquote {
     padding: 0 8px;
     margin-left: 5px;
+}
+.md blockquote {
+    border-left: 2px solid #c5c1ad;
 }
 </style>
