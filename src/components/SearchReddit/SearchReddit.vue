@@ -20,6 +20,13 @@
                   v-model="size"
               ></v-text-field>
           </v-flex>
+          <v-flex lg2>
+            <v-text-field
+                  name="subreddit"
+                  label="Subreddit"
+                  v-model="subreddit"
+              ></v-text-field>
+          </v-flex>
           <v-flex lg1>
             <v-btn
               @click="submit"
@@ -71,10 +78,14 @@
       submit() {
         this.loading = true;
         this.error = "";
+        let data = {"q": this.query, "size": this.size};
+        if (this.subreddit) {
+          data["subreddit"] = this.subreddit;
+        }
         utils.xdr(
           "https://api.pushshift.io/reddit/comment/search/",
           "GET",
-          {"q": this.query, "size": this.size},
+          data,
           {},
           (result) => {
             this.loading = false;
