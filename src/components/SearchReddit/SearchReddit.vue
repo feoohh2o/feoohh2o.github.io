@@ -33,6 +33,7 @@
             >
             submit
             </v-btn>
+            <v-btn v-if="search_results.length > 0" @click="toggle_expand">{{show_btn_message}}</v-btn>
           </v-flex>
           <v-flex lg>
             <v-alert v-show="error" color="error" icon="warning">
@@ -46,7 +47,7 @@
     <v-layout>
       <v-flex>
         <v-expansion-panel expand>
-          <Comment :comment="row" v-for="row, i in search_results" :key="i">
+          <Comment :comment="row" v-for="row, i in search_results" :key="i" :show="show_all">
           </Comment>
         </v-expansion-panel>
       </v-flex>
@@ -71,10 +72,27 @@
         // "search_results": fixture.data,
         "search_results": [],
         "error": "",
-        "loading": false
+        "loading": false,
+        "subreddit": "",
+        'show_all': false
+      }
+    },
+    computed: {
+      show_btn_message() {
+        if (this.show_all) {
+          return "Collpase all";
+        } else {
+          return "Expand all";
+        }
+      },
+      query_for_verification() {
+        return this.query.toLowerCase().replace(/"/g, '');
       }
     },
     methods: {
+      toggle_expand() {
+        this.show_all = !this.show_all;
+      },
       submit() {
         this.loading = true;
         this.error = "";
@@ -90,8 +108,9 @@
           (result) => {
             this.loading = false;
             try {
-              this.search_results = JSON.parse(result).data;
-              console.log(this.search_results);
+              this.search_results = _.filter(JSON.parse(result).data, (row) => {
+                return row.body.toLowerCase().indexOf(this.query_for_verification) !== -1;
+              });
             } catch(err) {
               this.error = "internal error";
               console.error(err);

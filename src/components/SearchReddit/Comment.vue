@@ -1,5 +1,5 @@
 <template>
-    <v-expansion-panel-content v-model="expand" @click="on_click" :class="{'active': active}">
+    <v-expansion-panel-content v-model="expand" @click="on_click">
       <div slot="header"  @click="on_click">
         <a :href="`https://www.reddit.com/u/${comment['author']}`">{{comment["author"]}}</a> in
         <a :href="`https://www.reddit.com/r/${comment['subreddit']}`">{{comment["subreddit"]}}</a>:
@@ -19,10 +19,10 @@
   import marked from 'marked'
   import utils from '../../utils.js'
   export default {
-    props: ['comment', 'active'],
+    props: ['comment', 'show'],
     data() {
       return {
-        expand: false
+        expand: this.show
       };
     },
     computed: {
@@ -51,13 +51,15 @@
         this.expand = !this.expand;
         this.$emit("click");
       }
+    },
+    watch: {
+      show(new_value) {
+        this.expand = new_value;
+      }
     }
   }
 </script>
 <style>
-.active {
-  background-color: lightgray !important;
-}
 blockquote {
     border-left: 2px solid #edf1f3;
     color: #738491;
