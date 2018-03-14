@@ -86,6 +86,7 @@
         return (100*(max+score)/(2*max)).toFixed(1)
     }
     function results() {
+        $(".button").attr("disabled", true);
         console.log("sending answers");
         console.log(answers);
         $.ajax({
@@ -101,6 +102,7 @@
             + `&g=${calc_score(govt,max_govt)}`
             + `&s=${calc_score(scty,max_scty)}`
         }).fail(function (data) {
+          $(".button").attr("disabled", false);
           console.error("failed to save data");
           console.error(data);
           $("#error-message").text("Failed to save data, please check your internet connection and try again");
